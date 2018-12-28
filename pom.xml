@@ -17,7 +17,19 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Greenwich.RC2</spring-cloud.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<swagger.version>2.9.2</swagger.version>
 	</properties>
+
+
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -36,6 +48,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-contract-wiremock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
 			<scope>test</scope>
 		</dependency>
@@ -43,6 +59,17 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-contract-verifier</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -64,15 +91,75 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>com.github.abigail830</groupId>
+				<artifactId>stream-contract-maven-plugin</artifactId>
+				<configuration>
+					<!--<targetContractDirectory>contracts</targetContractDirectory>-->
+					<restEndPoints>
+						<!--<RestEndPoint>-->
+						<!--<baseUrl>http://127.0.0.1:8080/contracts/ContractProvider</baseUrl>-->
+						<!--</RestEndPoint>-->
+					</restEndPoints>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-contract-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<!--<contractsDirectory>contracts</contractsDirectory>-->
+					<baseClassForTests>com.github.abigail830.contractclientsample.contract.BaseContractTestClass</baseClassForTests>
+				</configuration>
+			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.github.abigail830</groupId>
+					<artifactId>stream-contract-maven-plugin</artifactId>
+					<version>1.0-SNAPSHOT</version>
+					<executions>
+						<execution>
+							<id>cleanContract</id>
+							<phase>clean</phase>
+							<goals>
+								<goal>cleanContract</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>streamConvert</id>
+							<phase>compile</phase>
+							<goals>
+								<goal>streamConvert</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-contract-maven-plugin</artifactId>
+					<version>2.0.2.RELEASE</version>
+					<executions>
+						<execution>
+							<id>default-convert</id>
+							<phase>test-compile</phase>
+						</execution>
+						<execution>
+							<id>default-generateTests</id>
+							<phase>test-compile</phase>
+						</execution>
+						<execution>
+							<id>default-generateStubs</id>
+							<phase>none</phase>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</repository>
-	</repositories>
 
 </project>
