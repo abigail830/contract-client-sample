@@ -20,9 +20,9 @@ import java.util.Map;
 @EnableAutoConfiguration
 @SpringBootTest (classes= ContractClientSampleApplicationTests.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureStubRunner(ids=("com.github.abigail830:mock-server-sample:+:stubs:6565"),
-        repositoryRoot="http://nexus.saraqian.cn/repository/maven-snapshots/",
-        stubsMode = StubRunnerProperties.StubsMode.REMOTE
-//        stubsMode = StubRunnerProperties.StubsMode.LOCAL
+//        repositoryRoot="http://nexus.saraqian.cn/repository/maven-snapshots/",
+//        stubsMode = StubRunnerProperties.StubsMode.REMOTE
+        stubsMode = StubRunnerProperties.StubsMode.LOCAL
 )
 public class ContractConsumer1Test {
 
