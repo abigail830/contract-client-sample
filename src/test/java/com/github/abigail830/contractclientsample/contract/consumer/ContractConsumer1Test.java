@@ -20,9 +20,9 @@ import java.util.Map;
 @EnableAutoConfiguration
 @SpringBootTest (classes= ContractClientSampleApplicationTests.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureStubRunner(ids=("com.github.abigail830:mock-server-sample:+:stubs:6565"),
-//        repositoryRoot="http://nexus.saraqian.cn/repository/maven-snapshots/",
-//        stubsMode = StubRunnerProperties.StubsMode.REMOTE
-        stubsMode = StubRunnerProperties.StubsMode.LOCAL
+        repositoryRoot="http://nexus.saraqian.cn/repository/maven-snapshots/",
+        stubsMode = StubRunnerProperties.StubsMode.REMOTE
+//        stubsMode = StubRunnerProperties.StubsMode.LOCAL
 )
 public class ContractConsumer1Test {
 
@@ -36,9 +36,9 @@ public class ContractConsumer1Test {
         HttpEntity<String> requestEntity = new HttpEntity<String>(null ,headers);
 
         ResponseEntity<String> responseEntity = restTemplate
-                .exchange("http://127.0.0.1:6565/info/name", HttpMethod.GET, requestEntity, String.class, parameterizedType);
+                .exchange("http://127.0.0.1:6565/info/health", HttpMethod.GET, requestEntity, String.class, parameterizedType);
 
-        String abc = "{\"name\":\"contract-consumer\"}";
+        String abc = "{\"status\":\"UP\"}";
         Assert.assertEquals(abc, responseEntity.getBody());
     }
 }
